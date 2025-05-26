@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orçamento Viagem Los Angeles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8f9fa;
+            color: #202124;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 24px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+        
+        .header {
+            background: #1a73e8;
+            color: white;
+            padding: 24px 32px;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 24px 32px;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e8eaed;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .input-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #5f6368;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input, select {
+            padding: 8px 12px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            background: white;
+            color: #1a73e8;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn:hover {
+            background: #f8f9fa;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+        
+        .btn-primary:hover {
+            background: #1557b0;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 900px;
+        }
+        
+        th {
+            background: #f8f9fa;
+            color: #3c4043;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e8eaed;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .category-main {
+            font-weight: 500;
+            color: #1a73e8;
+            background-color: #e8f0fe;
+        }
+        
+        .category-sub {
+            font-weight: 500;
+            color: #137333;
+            padding-left: 32px;
+            background-color: #e6f4ea;
+        }
+        
+        .item {
+            padding-left: 48px;
+            color: #3c4043;
+        }
+        
+        .expand-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            color: #5f6368;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        .expand-btn:hover {
+            background-color: #f1f3f4;
+        }
+        
+        .collapsed {
+            display: none;
+        }
+        
+        .editable {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 4px 6px;
+            border-radius: 4px;
+            width: 100%;
+            font-size: inherit;
+            transition: all 0.2s;
+        }
+        
+        .editable:hover {
+            border-color: #dadce0;
+            background: #f8f9fa;
+        }
+        
+        .editable:focus {
+            outline: none;
+            border-color: #1a73e8;
+            background: white;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            padding: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .quantity-label {
+            font-size: 12px;
+            color: #5f6368;
+            margin-right: 8px;
+        }
+        
+        .total-row {
+            background: #1a73e8;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .subtotal-row {
+            background-color: #e8f0fe;
+            font-weight: 500;
+            color: #1a73e8;
+        }
+        
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            color: #ea4335;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        .delete-btn:hover {
+            background-color: #fce8e6;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e8eaed;
+            text-align: center;
+        }
+        
+        .summary-card h3 {
+            color: #5f6368;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 400;
+            color: #1a73e8;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 24px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+        }
+        
+        .modal h2 {
+            color: #3c4043;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+        
+        .close {
+            color: #5f6368;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .close:hover {
+            background-color: #f1f3f4;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #3c4043;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .notes {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .notes h3 {
+            color: #1a73e8;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        
+        .notes ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .notes li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        .notes li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1a73e8;
+            font-weight: bold;
+        }
+        
+        .exchange-info {
+            font-size: 11px;
+            color: #5f6368;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Los Angeles Trip Budget</h1>
+            <p>Viagem romântica • Disney • Universal • Tour Canábico</p>
+        </div>
+        
+        <div class="content">
+            <div class="controls">
+                <div class="input-group">
+                    <label for="days">Dias de viagem</label>
+                    <input type="number" id="days" value="7" min="1" max="30">
+                </div>
+                <div class="input-group">
+                    <label for="exchange">Cotação USD (R$)</label>
+                    <input type="number" id="exchange" value="5.20" step="0.01" min="1">
+                    <div class="exchange-info" id="exchangeInfo">Estimativa</div>
+                </div>
+                <div class="input-group">
+                    <label for="travelers">Pessoas</label>
+                    <input type="number" id="travelers" value="2" min="1" max="10">
+                </div>
+                <div class="input-group">
+                    <label for="taxRate">Taxa imposto (%)</label>
+                    <input type="number" id="taxRate" value="10.75" step="0.01" min="0" max="20">
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="openAddModal('category')">+ Categoria</button>
+                <button class="btn btn-primary" onclick="openAddModal('subcategory')">+ Subcategoria</button>
+                <button class="btn btn-primary" onclick="openAddModal('item')">+ Item</button>
+                <button class="btn" onclick="fetchExchangeRate()">🔄 Atualizar Cotação</button>
+            </div>
+            
+            <div class="table-container">
+                <table id="budgetTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">Categoria/Item</th>
+                            <th style="width: 25%">Descrição</th>
+                            <th style="width: 10%">Qtd</th>
+                            <th style="width: 10%">USD Unit</th>
+                            <th style="width: 12%">BRL Unit</th>
+                            <th style="width: 10%">Total + Tax</th>
+                            <th style="width: 3%">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="summary">
+                <div class="summary-card">
+                    <h3>Total por Pessoa</h3>
+                    <div class="value" id="totalPerPerson">R$ 0</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Total da Viagem</h3>
+                    <div class="value" id="totalTrip">R$ 0</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Média por Dia</h3>
+                    <div class="value" id="dailyAverage">R$ 0</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Total com Impostos</h3>
+                    <div class="value" id="totalWithTax">R$ 0</div>
+                </div>
+            </div>
+            
+            <div class="notes">
+                <h3>Dicas para Los Angeles</h3>
+                <ul>
+                    <li><strong>Disney (2 dias):</strong> Park Hopper permite visitar ambos os parques</li>
+                    <li><strong>Universal:</strong> Express Pass economiza tempo em filas</li>
+                    <li><strong>Romântico:</strong> Griffith Observatory, Malibu Beach sunset</li>
+                    <li><strong>Tour Canábico:</strong> Dispensários oferecem tours educativos</li>
+                    <li><strong>Transporte:</strong> Aluguel de carro recomendado</li>
+                    <li><strong>Impostos:</strong> LA County ~10.75% sales tax</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Adicionar Item</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="itemType">Tipo:</label>
+                    <select id="itemType">
+                        <option value="category">Categoria Principal</option>
+                        <option value="subcategory">Subcategoria</option>
+                        <option value="item">Item</option>
+                    </select>
+                </div>
+                <div class="form-group" id="parentGroup" style="display: none;">
+                    <label for="parentCategory">Categoria Pai:</label>
+                    <select id="parentCategory"></select>
+                </div>
+                <div class="form-group">
+                    <label for="itemName">Nome:</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Descrição:</label>
+                    <textarea id="itemDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group" id="priceGroup">
+                    <label for="itemPrice">Preço (USD):</label>
+                    <input type="number" id="itemPrice" step="0.01" min="0">
+                </div>
+                <div class="form-group" id="quantityGroup">
+                    <label for="itemQuantity">Quantidade:</label>
+                    <input type="number" id="itemQuantity" value="1" min="1">
+                </div>
+                <div class="form-group" id="dailyGroup">
+                    <label>
+                        <input type="checkbox" id="isDaily"> Gasto diário (multiplicar por dias)
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let budgetData = {
+            "Parques de Diversão": {
+                type: "category",
+                expanded: true,
+                children: {
+                    "Disney": {
+                        type: "subcategory",
+                        expanded: true,
+                        children: {
+                            "Park Hopper": { type: "item", description: "2 dias ambos os parques", price: 160, quantity: 2, daily: false },
+                            "Alimentação Disney": { type: "item", description: "Refeições por dia no parque", price: 80, quantity: 1, daily: true }
+                        }
+                    },
+                    "Universal": {
+                        type: "subcategory",
+                        expanded: true,
+                        children: {
+                            "Ingresso Universal": { type: "item", description: "1 dia + Express Pass", price: 150, quantity: 1, daily: false },
+                            "Alimentação Universal": { type: "item", description: "Refeições no parque", price: 60, quantity: 1, daily: false }
+                        }
+                    }
+                }
+            },
+            "Alimentação": {
+                type: "category",
+                expanded: true,
+                children: {
+                    "Restaurantes": {
+                        type: "subcategory",
+                        expanded: true,
+                        children: {
+                            "Jantar Romântico": { type: "item", description: "Fine dining", price: 120, quantity: 2, daily: false },
+                            "Refeições Gerais": { type: "item", description: "Café/almoço diário", price: 60, quantity: 1, daily: true }
+                        }
+                    }
+                }
+            },
+            "Hospedagem": {
+                type: "category",
+                expanded: true,
+                children: {
+                    "Hotel": { type: "item", description: "Próximo Disney/Hollywood", price: 180, quantity: 1, daily: true }
+                }
+            },
+            "Transporte": {
+                type: "category",
+                expanded: true,
+                children: {
+                    "Passagem Aérea": { type: "item", description: "Ida/volta Brasil-LAX", price: 1200, quantity: 1, daily: false },
+                    "Aluguel Carro": { type: "item", description: "Carro médio", price: 45, quantity: 1, daily: true },
+                    "Combustível": { type: "item", description: "Gasolina", price: 25, quantity: 1, daily: true }
+                }
+            },
+            "Atrações": {
+                type: "category",
+                expanded: true,
+                children: {
+                    "Tour Canábico": { type: "item", description: "Tour educativo dispensários", price: 80, quantity: 1, daily: false },
+                    "Hollywood/Griffith": { type: "item", description: "Passeios românticos", price: 60, quantity: 1, daily: false },
+                    "Malibu/Praias": { type: "item", description: "Day trip praias", price: 40, quantity: 1, daily: false }
+                }
+            },
+            "Compras": {
+                type: "category",
+                expanded: true,
+                children: {
+                    "Souvenirs Disney": { type: "item", description: "Lembranças parques", price: 150, quantity: 1, daily: false },
+                    "Compras Gerais": { type: "item", description: "Roupas/presentes", price: 200, quantity: 1, daily: false }
+                }
+            },
+            "Outros": {
+                type: "category",
+                expanded: true,
+                children: {
+                    "Seguro Viagem": { type: "item", description: "Cobertura casal", price: 120, quantity: 1, daily: false },
+                    "Extras": { type: "item", description: "Imprevistos", price: 300, quantity: 1, daily: false }
+                }
+            }
+        };
+
+        function updateTable() {
+            const days = parseInt(document.getElementById('days').value);
+            const exchange = parseFloat(document.getElementById('exchange').value);
+            const travelers = parseInt(document.getElementById('travelers').value);
+            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
+            
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            let grandTotal = 0;
+            
+            function renderLevel(data, level = 0, parentKey = '') {
+                let levelTotal = 0;
+                
+                Object.entries(data).forEach(([key, value]) => {
+                    if (value.type === 'category') {
+                        const childTotal = value.children ? calculateCategoryTotal(value.children, days) : 0;
+                        levelTotal += childTotal;
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="category-main">
+                                <button class="expand-btn" onclick="toggleExpand('${key}')">
+                                    ${value.expanded ? '▼' : '▶'}
+                                </button>
+                                <input type="text" class="editable" value="${key}" style="font-weight: 500;" onchange="updateName('${key}', this.value)">
+                            </td>
+                            <td colspan="4"></td>
+                            <td><strong>R$ ${(childTotal * exchange * (1 + taxRate) * travelers).toFixed(2)}</strong></td>
+                            <td><button class="delete-btn" onclick="deleteItem('${key}')">🗑</button></td>
+                        `;
+                        tbody.appendChild(row);
+                        
+                        if (value.expanded && value.children) {
+                            renderLevel(value.children, level + 1, key);
+                        }
+                    } else if (value.type === 'subcategory') {
+                        const childTotal = value.children ? calculateCategoryTotal(value.children, days) : 0;
+                        levelTotal += childTotal;
+                        
+                        const row = document.createElement('tr');
+                        row.className = parentKey ? `child-${parentKey.replace(/\s+/g, '')}` : '';
+                        row.innerHTML = `
+                            <td class="category-sub">
+                                <button class="expand-btn" onclick="toggleExpand('${parentKey}.${key}')">
+                                    ${value.expanded ? '▼' : '▶'}
+                                </button>
+                                <input type="text" class="editable" value="${key}" style="font-weight: 500;" onchange="updateName('${parentKey}.${key}', this.value)">
+                            </td>
+                            <td colspan="4"></td>
+                            <td><strong>R$ ${(childTotal * exchange * (1 + taxRate) * travelers).toFixed(2)}</strong></td>
+                            <td><button class="delete-btn" onclick="deleteItem('${parentKey}.${key}')">🗑</button></td>
+                        `;
+                        tbody.appendChild(row);
+                        
+                        if (value.expanded && value.children) {
+                            renderLevel(value.children, level + 1, `${parentKey}.${key}`);
+                        }
+                    } else if (value.type === 'item') {
+                        let finalPrice = value.price * value.quantity;
+                        if (value.daily) {
+                            finalPrice *= days;
+                        }
+                        
+                        const finalPriceBRL = finalPrice * exchange;
+                        const totalWithTax = finalPriceBRL * (1 + taxRate) * travelers;
+                        levelTotal += finalPrice;
+                        
+                        const row = document.createElement('tr');
+                        const categoryClass = parentKey.split('.')[0] ? `child-${parentKey.split('.')[0].replace(/\s+/g, '')}` : '';
+                        row.className = categoryClass;
+                        
+                        row.innerHTML = `
+                            <td class="item">${key}</td>
+                            <td><input type="text" class="editable" value="${value.description}" onchange="updateDescription('${parentKey}', '${key}', this.value)"></td>
+                            <td>
+                                ${value.daily ? `<span class="quantity-label">${days}d ×</span>` : ''}
+                                <input type="number" class="quantity-input" value="${value.quantity}" min="1" onchange="updateQuantity('${parentKey}', '${key}', this.value)">
+                            </td>
+                            <td><input type="number" class="editable" value="${value.price}" step="0.01" onchange="updatePrice('${parentKey}', '${key}', this.value)" style="width: 80px;"></td>
+                            <td>R$ ${finalPriceBRL.toFixed(2)}</td>
+                            <td>R$ ${totalWithTax.toFixed(2)}</td>
+                            <td><button class="delete-btn" onclick="deleteItem('${parentKey}.${key}')">🗑</button></td>
+                        `;
+                        tbody.appendChild(row);
+                    }
+                });
+                
+                return levelTotal;
+            }
+            
+            function calculateCategoryTotal(data, days) {
+                let total = 0;
+                Object.values(data).forEach(item => {
+                    if (item.type === 'item') {
+                        let price = item.price * item.quantity;
+                        if (item.daily) price *= days;
+                        total += price;
+                    } else if (item.children) {
+                        total += calculateCategoryTotal(item.children, days);
+                    }
+                });
+                return total;
+            }
+            
+            grandTotal = renderLevel(budgetData);
+            
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'total-row';
+            const totalWithTax = grandTotal * exchange * (1 + taxRate) * travelers;
+            totalRow.innerHTML = `
+                <td colspan="5"><strong>TOTAL GERAL</strong></td>
+                <td><strong>R$ ${totalWithTax.toFixed(2)}</strong></td>
+                <td></td>
+            `;
+            tbody.appendChild(totalRow);
+            
+            const totalPerPersonBRL = grandTotal * exchange * (1 + taxRate);
+            const totalTripBRL = totalPerPersonBRL * travelers;
+            const dailyAverageBRL = totalPerPersonBRL / days;
+            
+            document.getElementById('totalPerPerson').textContent = `R$ ${totalPerPersonBRL.toFixed(2)}`;
+            document.getElementById('totalTrip').textContent = `R$ ${totalTripBRL.toFixed(2)}`;
+            document.getElementById('dailyAverage').textContent = `R$ ${dailyAverageBRL.toFixed(2)}`;
+            document.getElementById('totalWithTax').textContent = `R$ ${totalTripBRL.toFixed(2)}`;
+        }
+        
+        function toggleExpand(path) {
+            const keys = path.split('.');
+            let current = budgetData;
+            keys.forEach(key => {
+                if (key && current[key]) {
+                    current = current[key];
+                } else if (key && current.children && current.children[key]) {
+                    current = current.children[key];
+                }
+            });
+            current.expanded = !current.expanded;
+            updateTable();
+        }
+        
+        function updateName(path, newName) {
+            const keys = path.split('.');
+            const oldName = keys[keys.length - 1];
+            let parent = budgetData;
+            
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (parent[keys[i]]) {
+                    parent = parent[keys[i]];
+                } else if (parent.children && parent.children[keys[i]]) {
+                    parent = parent.children[keys[i]];
+                }
+            }
+            
+            if (keys.length === 1) {
+                budgetData[newName] = budgetData[oldName];
+                delete budgetData[oldName];
+            } else {
+                parent.children[newName] = parent.children[oldName];
+                delete parent.children[oldName];
+            }
+            
+            updateTable();
+        }
+        
+        function updateDescription(parentKey, itemKey, newValue) {
+            const keys = parentKey.split('.');
+            let current = budgetData;
+            keys.forEach(key => {
+                if (key) current = current[key].children;
+            });
+            current[itemKey].description = newValue;
+        }
+        
+        function updatePrice(parentKey, itemKey, newValue) {
+            const keys = parentKey.split('.');
+            let current = budgetData;
+            keys.forEach(key => {
+                if (key) current = current[key].children;
+            });
+            current[itemKey].price = parseFloat(newValue) || 0;
+            updateTable();
+        }
+        
+        function updateQuantity(parentKey, itemKey, newValue) {
+            const keys = parentKey.split('.');
+            let current = budget
